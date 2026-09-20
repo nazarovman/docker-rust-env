@@ -1,0 +1,11 @@
+services:
+  workspace:
+    container_name: rust
+    build: .
+    image: rust-env
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./workspace:/workspace
+    env_file:
+      - .env
