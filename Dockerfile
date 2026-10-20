@@ -28,4 +28,6 @@ RUN mv /tmp/zellij /usr/local/bin/zellij \
 RUN git config --global credential.helper '!f() { echo "username=x-access-token"; echo "password=${GITHUB_TOKEN}"; }; f' \
     && git config --global init.defaultBranch main
 
+RUN echo "scroll_mode_sync false" >> /root/.config/zellij/config.kdl
+
 CMD ["/usr/local/bin/zellij", "attach", "-c", "main", "options", "--default-shell", "bash", "--default-mode", "locked"]
