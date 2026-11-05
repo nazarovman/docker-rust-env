@@ -1,0 +1,5 @@
+scroll_mode_sync false
+default_shell "bash"
+default_mode "locked"
+session_serialization true
+pane_viewport_serialization true

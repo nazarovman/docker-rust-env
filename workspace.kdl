@@ -1,0 +1,21 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="Workspace" focus=true {
+        pane split_direction="horizontal" {
+            pane split_direction="vertical" {
+                pane name="Explorer" size="20%"
+                pane name="Editor"
+            }
+            pane name="Console" size="20%"
+        }
+    }
+}
