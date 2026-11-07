@@ -9,13 +9,15 @@ layout {
         }
     }
 
-    tab name="Workspace" focus=true {
-        pane split_direction="horizontal" {
-            pane split_direction="vertical" {
-                pane name="Explorer" size="20%"
-                pane name="Editor"
-            }
-            pane name="Console" size="20%"
+    tab name="Workspace" {
+        pane split_direction="horizontal" name="Editor" focus=true {
+            command "hx"
+			args "."
+            start_suspended false
+        }
+        pane name="Console" size="20%" {
+            command "/bin/bash"
+            start_suspended false
         }
     }
 }
