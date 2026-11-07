@@ -12,6 +12,7 @@ RUN cargo install --locked zellij --root /export/ \
 
 FROM rust:1.98.1-slim-trixie
 WORKDIR /workspace
+EXPOSE 22
 
 COPY --from=builder /export /tmp
 
@@ -21,20 +22,27 @@ RUN mv /tmp/zellij /usr/local/bin/zellij \
     build-essential \
     man \
     curl \
+    openssh-server \
     /tmp/helix_25.7.1-1_amd64.deb \
     && rm -rf /tmp/helix_25.7.1-1_amd64.deb /var/lib/apt/lists/* \
-    && rustup component add rust-analyzer
+    && rustup component add rust-analyzer \
+    && ssh-keygen -A
 
-RUN git config --global credential.helper '!f() { echo "username=x-access-token"; echo "password=${GITHUB_TOKEN}"; }; f' \
-    && git config --global init.defaultBranch main
+COPY ./build/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-COPY ./zellij_cfg.kdl /tmp/zellij_cfg.kdl
+COPY ./build/bashrc_mod /tmp/bashrc_mod
+RUN cat /tmp/bashrc_mod >> /root/.bashrc \
+    && rm -f /tmp/bashrc_mod
 
+COPY ./build/ssh.conf /etc/ssh/sshd_config.d/00-custom.conf
+
+COPY ./build/zellij_cfg.kdl /tmp/zellij_cfg.kdl
 RUN mkdir -p /root/.config/zellij \
     && zellij setup --dump-config > /root/.config/zellij/config.kdl \
     && cat /tmp/zellij_cfg.kdl >> /root/.config/zellij/config.kdl \
     && rm -f /tmp/zellij_cfg.kdl
 
-COPY ./workspace.kdl /usr/local/share/zellij/layouts/workspace.kdl
+COPY ./build/workspace.kdl /usr/local/share/zellij/layouts/workspace.kdl
 
-CMD ["/usr/local/bin/zellij", "--layout", "/usr/local/share/zellij/layouts/workspace.kdl", "attach", "-c", "main"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/sbin/sshd", "-D"]
