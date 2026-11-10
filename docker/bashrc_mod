@@ -6,7 +6,7 @@ export PATH="/usr/local/cargo/bin:$PATH"
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
     if [ -z "$ZELLIJ" ]; then
         cd /workspace 2>/dev/null || cd "$HOME"
-        /usr/local/bin/zellij --layout /usr/local/share/zellij/layouts/workspace.kdl attach -c main
+        /usr/local/cargo/bin/zellij --layout /usr/local/share/zellij/layouts/workspace.kdl attach -c main
         exit
     fi
 fi
