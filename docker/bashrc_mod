@@ -1,4 +1,5 @@
 export EDITOR="hx"
+export PATH="/usr/local/rustup/toolchains/1.98.1-x86_64-unknown-linux-gnu/bin:$PATH"
 
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
     if [ -z "$ZELLIJ" ]; then
